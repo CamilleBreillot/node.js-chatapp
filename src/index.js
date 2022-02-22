@@ -16,10 +16,18 @@ io.on('connection', (socket) => {
   console.log('New WebSocket connection')
 
   socket.emit('message', 'Welcome!') // emit single client refering to
-  socket.broadcast.emit('message', 'A new user has join') // emit to every clients except current client
+  socket.broadcast.emit('message', 'A new user has joined!') // emit to every clients except current client
 
   socket.on('sendMessage', (message) => {
     io.emit('message', message) // io emit to every single client
+  })
+
+  socket.on('sendLocation', (coords) => {
+    io.emit('message', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`)
+  })
+
+  socket.on('disconnect', () => {
+    io.emit('message', 'A user has left!')
   })
 })
 
